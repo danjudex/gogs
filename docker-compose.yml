@@ -13,7 +13,7 @@ services:
     ports:
       - ${GOGS_SSH_PORT}:22
     volumes:
-      - gogs_data:/data
+      - ./data:/data
     restart: always
 
   postgres:
@@ -29,7 +29,6 @@ services:
     restart: always
 
 volumes:
-  gogs_data: ~
   postgres_data: ~
 
 networks:
