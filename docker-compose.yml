@@ -16,20 +16,35 @@ services:
       - ./data:/data
     restart: always
 
-  postgres:
-    image: postgres:13-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+  # postgres:
+  #   image: postgres:13-alpine
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+  #   environment:
+  #     POSTGRES_PASSWORD: postgres
+  #   networks:
+  #     - default
+  #     - web
+  #   restart: always
+
+  mysql:
+    image: mysql:5.7
     environment:
-      POSTGRES_PASSWORD: postgres
+      MYSQL_DATABASE: gogs
+      MYSQL_USER: gogs
+      MYSQL_PASSWORD: gogs
     networks:
       - default
       - web
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
     restart: always
 
 volumes:
-  postgres_data: ~
+  # postgres_data: ~
+  mysql_data: ~
 
 networks:
   web:
