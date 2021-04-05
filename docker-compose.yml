@@ -4,6 +4,7 @@ services:
   gogs:
     image: gogs/gogs
     networks:
+      - default
       - web
     labels:
       - "traefik.enable=true"
@@ -15,8 +16,21 @@ services:
       - gogs_data:/data
     restart: always
 
+  postgres:
+    image: postgres/13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - default
+      - web
+    restart: always
+
 volumes:
   gogs_data: ~
+  postgres_data: ~
 
 networks:
   web:
