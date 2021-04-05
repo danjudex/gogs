@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  gogs:
+    image: gogs/gogs
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP_NAME}-gogs.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.services.${APP_NAME}-gogs.loadBalancer.server.port=3000"
+    ports:
+      - ${GOGS_SSH_PORT}:22
+    volumes:
+      - gogs_data:/data
+    restart: always
+
+volumes:
+  gogs_data: ~
+
+networks:
+  web:
+    external: true
